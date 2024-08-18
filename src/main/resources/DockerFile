@@ -1,0 +1,18 @@
+# Use an official Java runtime as a parent image
+FROM openjdk:17-jdk-slim-buster
+
+# Set the working directory in the container
+WORKDIR /usr/app
+
+# Copy the current directory contents into the container at /usr/app
+COPY target/bookstore.jar /usr/app/bookstore.jar
+
+# Make port 8080 available to the world outside this container
+EXPOSE 8080
+
+
+# Start Redis as a separate container
+RUN docker run -d --name bookstore-redis -p 6379:6379 redis:latest
+
+# Run the jar file with Redis and H2 configurations
+ENTRYPOINT ["java","-Dspring.data.redis.host=localhost", "-Dspring.data.redis.port=6379", "-Dspring.h2.console.enabled=true", "-Dspring.h2.console.path=/h2-console", "-Dspring.h2.console.settings.webAuth=false", "-jar","/usr/app/bookstore.jar"]

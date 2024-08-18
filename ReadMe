@@ -1,0 +1,53 @@
+# Bookstore Application
+
+## Overview
+This is a simple bookstore application that uses Java, Spring Boot, Redis, and H2 Database for managing books and users.
+
+## Prerequisites
+- Docker (for running Redis as a separate container)
+- Java 17 or later
+- Maven (or another build tool)
+
+## Getting Started
+1. **Clone the Repository**
+sh git clone <repository-url> cd bookstore-application
+
+2. **Build the Application**
+   sh mvn clean install
+3. **Run the Application**
+   - **Using Docker (recommended for development):**
+     sh docker build -t bookstore-app . docker run -p 8080:8080 -p 6379:6379 --name bookstore-redis -d redis:latest docker run -p 8080:8080 --name bookstore-app -it bookstore-app
+        - This will start a Redis container and then the application container.
+        - The application will be accessible at `http://localhost:8080`.
+
+   - **Without Docker:**
+     sh java -jar target/bookstore.jar
+        - Ensure Redis is running on `localhost:6379`.
+        - The application will be accessible at `http://localhost:8080`.
+
+4. **Testing the Application**
+   - **Unit Tests:**
+     sh mvn test
+   - This command runs all unit tests defined in the project.
+
+   - **Integration Tests:**
+   - Define integration tests in the `src/test/java` directory.
+   - Run these tests using the same `mvn test` command.
+
+5. **Accessing H2 Console**
+   - To access the H2 console, visit `http://localhost:8080/h2-console`.
+   - No authentication required.
+
+## Configuration
+- **Redis Configuration:**
+  - Host: `localhost`
+  - Port: `6379`
+
+- **H2 Database Configuration:**
+  - Enabled: `true`
+  - Path: `/h2-console`
+  - Web Authentication: `false`
+
+This is just a simple demo, usually it requires a microservice split,
+such as order service, inventory service, price service, product service, etc.,
+and works together with registration center, configuration center, RPC service framework, etc
